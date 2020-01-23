@@ -23,10 +23,10 @@ spring:
     cache: false
 
   datasource:
-    username: root
+    username: hotel_face
     password: lbx990203
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hotel?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://121.36.42.4:3306/hotel?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     type: com.alibaba.druid.pool.DruidDataSource
 
   resources:

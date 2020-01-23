@@ -104,6 +104,16 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+
+        <!-- Face AI dependency -->
+        <dependency>
+            <groupId>com.arcsoft.face</groupId>
+            <artifactId>arcsoft-sdk-face</artifactId>
+            <version>2.2.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/arcsoft-sdk-face-2.2.0.1.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -116,5 +126,6 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 </project>

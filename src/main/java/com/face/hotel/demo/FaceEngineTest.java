@@ -58,7 +58,7 @@ public class FaceEngineTest {
 
 
         //人脸检测
-        ImageInfo imageInfo = getRGBData(new File("/home/abing/下载/1.jpg"));
+        ImageInfo imageInfo = getRGBData(new File("/home/dx/桌面/4.jpg"));
         List<FaceInfo> faceInfoList = new ArrayList<>();
         int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
         System.out.println(faceInfoList);
@@ -69,7 +69,7 @@ public class FaceEngineTest {
         System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
 
         //人脸检测2
-        ImageInfo imageInfo2 = getRGBData(new File("/home/abing/下载/2.jpg"));
+        ImageInfo imageInfo2 = getRGBData(new File("/home/dx/桌面/3.jpg"));
         List<FaceInfo> faceInfoList2 = new ArrayList<>();
         int detectCode2 = faceEngine.detectFaces(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList2);
         System.out.println(faceInfoList);
@@ -122,7 +122,7 @@ public class FaceEngineTest {
 
 
         //IR属性处理
-        ImageInfo imageInfoGray = getGrayData(new File("/home/abing/下载/1.jpg"));
+        ImageInfo imageInfoGray = getGrayData(new File("/home/dx/桌面/1.jpg"));
         List<FaceInfo> faceInfoListGray = new ArrayList<>();
         int detectCodeGray = faceEngine.detectFaces(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray);
 

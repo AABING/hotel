@@ -1,4 +1,13 @@
 package com.face.hotel.mapper;
 
-public class UserRoomMapper {
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * @Institution csust
+ * @Author MeiyuJijieYihou
+ * @Description Waiting for development
+ * @Date 2020/1/22 下午9:46
+ **/
+@Mapper
+public interface UserRoomMapper {
 }

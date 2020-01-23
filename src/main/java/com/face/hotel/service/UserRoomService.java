@@ -6,5 +6,5 @@ package com.face.hotel.service;
  * @Description Waiting fo development.
  * @Date 2020/1/22 下午10:03
  */
-public class UserRoomService {
+public interface UserRoomService {
 }
