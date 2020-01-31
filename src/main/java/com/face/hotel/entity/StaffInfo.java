@@ -2,6 +2,7 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -16,6 +17,7 @@ import java.util.Date;
 @Data
 public class StaffInfo {
 
+  @Id
   private Long id;
 
   private String name;
