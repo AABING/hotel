@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,6 +51,48 @@ public class UserController {
             result.setData(userInfo);
         } catch (Exception e) {
             result.setStatus(ResultCode.NOT_FIND);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+
+    @ApiOperation("新增用户信息")
+    @PostMapping("/insert")
+    public Result<String> insertUserInfo(UserInfo userInfo) {
+        Result<String> result = new Result<>();
+        try {
+            String s = userInfoService.insertUserInfo(userInfo);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+
+    @ApiOperation("修改用户信息")
+    @PutMapping("/update")
+    public Result<String> updateUserInfo(UserInfo userInfo) {
+        Result<String> result = new Result<>();
+        try {
+            String s = userInfoService.updateUserInfo(userInfo);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+
+    @ApiOperation("删除用户信息")
+    @DeleteMapping("/delete/{id}")
+    public Result<String> deleteUserInfo(@PathVariable String id) {
+        Result<String> result = new Result<>();
+        try {
+            String s = userInfoService.deleteUserInfo(id);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
         }
         return result;
