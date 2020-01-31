@@ -2,6 +2,8 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
+
 /**
  * Description: 客房信息表
  *
@@ -13,6 +15,7 @@ import lombok.Data;
 @Data
 public class RoomInfo {
 
+  @Id
   private Long id;
 
   private String roomNumber;

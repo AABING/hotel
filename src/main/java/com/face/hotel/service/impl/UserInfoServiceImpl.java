@@ -32,21 +32,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public String updateUserInfo(UserInfo userInfo) throws Exception {
-        int result = userInfoMapper.updateByPrimaryKey(userInfo);
-        if (result != 1) {
-            throw new Exception("修改失败");
-        }
-        return "修改成功";
-    }
-
-    @Override
     public String insertUserInfo(UserInfo userInfo) throws Exception {
         int result = userInfoMapper.insert(userInfo);
         if (result != 1) {
             throw new Exception("新增失败");
         }
         return "新增成功";
+    }
+
+    @Override
+    public String updateUserInfo(UserInfo userInfo) throws Exception {
+        int result = userInfoMapper.updateByPrimaryKey(userInfo);
+        if (result != 1) {
+            throw new Exception("修改失败");
+        }
+        return "修改成功";
     }
 
     @Override

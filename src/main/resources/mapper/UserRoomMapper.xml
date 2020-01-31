@@ -14,11 +14,19 @@
 
     <select id="getUserRoomById" resultType="com.face.hotel.entity.UserRoom">
         SELECT
-            <include refid="userRoom"></include>
+          <include refid="userRoom"></include>
         FROM
           user_room
         WHERE user_id = #{userId}
           AND room_id = #{roomId}
     </select>
+
+    <delete id="deleteUserRoomById">
+        DELETE
+        FROM
+          user_room
+        WHERE user_id = #{userId}
+          AND room_id = #{roomId}
+    </delete>
 
 </mapper>

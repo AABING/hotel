@@ -2,7 +2,7 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
+import javax.persistence.Id;
 
 /**
  * Description: 入住信息表
@@ -15,15 +15,17 @@ import java.sql.Timestamp;
 @Data
 public class UserRoom {
 
+  @Id
   private Long userId;
 
+  @Id
   private Long roomId;
 
-  private Timestamp scheduledTime;
+  private String scheduledTime;
 
-  private Timestamp checkInTime;
+  private String checkInTime;
 
-  private Integer duration;
+  private String checkOutTime;
 
   private Integer effect;
 
