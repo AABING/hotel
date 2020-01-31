@@ -30,4 +30,31 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo getUserInfoById(String id) {
         return userInfoMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public String updateUserInfo(UserInfo userInfo) throws Exception {
+        int result = userInfoMapper.updateByPrimaryKey(userInfo);
+        if (result != 1) {
+            throw new Exception("修改失败");
+        }
+        return "修改成功";
+    }
+
+    @Override
+    public String insertUserInfo(UserInfo userInfo) throws Exception {
+        int result = userInfoMapper.insert(userInfo);
+        if (result != 1) {
+            throw new Exception("新增失败");
+        }
+        return "新增成功";
+    }
+
+    @Override
+    public String deleteUserInfo(String id) throws Exception {
+        int result = userInfoMapper.deleteByPrimaryKey(id);
+        if (result != 1) {
+            throw new Exception("删除失败");
+        }
+        return "删除成功";
+    }
 }

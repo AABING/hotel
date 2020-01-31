@@ -9,6 +9,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @Description Waiting for development
  * @Date 2020/1/22 下午9:55
  **/
-@org.apache.ibatis.annotations.Mapper
 public interface GymInfoMapper extends Mapper<GymInfo> {
 }

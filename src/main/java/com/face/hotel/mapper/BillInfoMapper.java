@@ -12,7 +12,6 @@ import java.util.List;
  * @Description Waiting for development
  * @Date 2020/1/22 下午9:48
  **/
-@org.apache.ibatis.annotations.Mapper
 public interface BillInfoMapper extends Mapper<BillInfo> {
 
     /**

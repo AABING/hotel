@@ -3,7 +3,7 @@ server:
 
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
-  type-aliases-package: com.abing.blog.entity
+  type-aliases-package: com.face.hotel.entity
   configuration:
     map-underscore-to-camel-case: true
 
