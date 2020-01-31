@@ -2,5 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.face.hotel.mapper.UserRoomMapper">
 
+    <sql id="userRoom">
+      user_id,
+      room_id,
+      scheduled_time,
+      check_in_time,
+      check_out_time,
+      effect,
+      clearing
+    </sql>
+
+    <select id="getUserRoomById" resultType="com.face.hotel.entity.UserRoom">
+        SELECT
+            <include refid="userRoom"></include>
+        FROM
+          user_room
+        WHERE user_id = #{userId}
+          AND room_id = #{roomId}
+    </select>
 
 </mapper>
