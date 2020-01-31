@@ -2,5 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.face.hotel.mapper.BillInfoMapper">
 
+    <sql id="billInfo">
+        id,
+        cost,
+        name,
+        description,
+        full_name,
+        time,
+        transaction_id,
+        shop_id,
+        user_id,
+        note
+    </sql>
 
+    <select id="selectBillInfoByUserId" resultType="com.face.hotel.entity.BillInfo">
+        SELECT
+            <include refid="billInfo"></include>
+        FROM
+            bill_info
+        WHERE user_id = #{userId}
+    </select>
 </mapper>
