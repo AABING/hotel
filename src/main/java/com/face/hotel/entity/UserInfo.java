@@ -2,6 +2,8 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
+
 /**
  * Description: 用户信息表
  *
@@ -13,6 +15,7 @@ import lombok.Data;
 @Data
 public class UserInfo {
 
+  @Id
   private Long id;
 
   private String name;
@@ -27,7 +30,7 @@ public class UserInfo {
 
   private Integer level;
 
-  private Long consumption;
+  private Double consumption;
 
   private Integer cardType;
 
@@ -37,7 +40,7 @@ public class UserInfo {
 
   private Integer status;
 
-  private Long debt;
+  private Double debt;
 
   private String note;
 

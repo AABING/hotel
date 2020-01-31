@@ -1,6 +1,8 @@
 package com.face.hotel.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import com.face.hotel.entity.UserInfo;
+import org.springframework.security.core.Transient;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * @Institution csust
@@ -8,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description Waiting for development
  * @Date 2020/1/22 下午9:47
  **/
-@Mapper
-public interface UserInfoMapper {
+@Transient
+public interface UserInfoMapper extends Mapper<UserInfo> {
+
 }

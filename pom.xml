@@ -114,6 +114,12 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/arcsoft-sdk-face-2.2.0.1.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>4.1.5</version>
+        </dependency>
     </dependencies>
 
     <build>

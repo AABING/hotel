@@ -24,7 +24,7 @@ spring:
 
   datasource:
     username: hotel_face
-    password: lbx990203
+    password: hotel_face_20200120
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://121.36.42.4:3306/hotel?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     type: com.alibaba.druid.pool.DruidDataSource

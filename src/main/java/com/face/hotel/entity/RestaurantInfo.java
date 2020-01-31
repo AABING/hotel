@@ -17,7 +17,7 @@ public class RestaurantInfo {
 
   private Long id;
 
-  private Long amount;
+  private Double amount;
 
   private Timestamp time;
 
