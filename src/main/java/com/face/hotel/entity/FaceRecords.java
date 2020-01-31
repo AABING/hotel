@@ -23,9 +23,9 @@ public class FaceRecords {
     private Long id;
 
     /**
-     * 设备ID
+     * 人面识别的设备ID（地下停车库出入口、停车位前配备人面识别设备）
      */
-    @ApiModelProperty("设备ID")
+    @ApiModelProperty("人面识别的设备ID（地下停车库出入口、停车位前配备人面识别设备）")
     private Long equipmentId;
 
     /**
