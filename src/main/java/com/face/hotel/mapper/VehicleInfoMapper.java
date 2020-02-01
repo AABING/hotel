@@ -1,7 +1,7 @@
 package com.face.hotel.mapper;
 
 import com.face.hotel.entity.VehicleInfo;
-import org.apache.ibatis.annotations.Mapper;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @Description Waiting fo development.
  * @Date 2020/1/23 上午11:49
  */
-public interface VehicleInfoMapper {
+public interface VehicleInfoMapper extends Mapper<VehicleInfo> {
 
     List<VehicleInfo> selectAllVehicleInfo();
 

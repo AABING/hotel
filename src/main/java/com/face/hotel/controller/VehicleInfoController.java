@@ -8,9 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,6 +37,73 @@ public class VehicleInfoController {
             result.setData(vehicleInfos);
         } catch (Exception e) {
             result.setStatus(ResultCode.NOT_FIND);
+            result.setMassage(e.getMessage());
+        }
+
+        return result;
+    }
+
+    @ApiOperation("根据Id查询停车信息")
+    @GetMapping("/get/{id}")
+    public Result<VehicleInfo> getVehicleInfoById(@PathVariable Long id) {
+
+        Result<VehicleInfo> result = new Result<>();
+
+        try {
+            VehicleInfo vehicleInfo = vehicleInfoService.getVehicleInfoById(id);
+            result.setData(vehicleInfo);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.NOT_FIND);
+            result.setMassage(e.getMessage());
+        }
+
+        return result;
+    }
+
+    @ApiOperation("修改停车信息")
+    @PutMapping("/update")
+    public Result<String> updateVehicleInfo(VehicleInfo vehicleInfo) {
+        Result<String> result = new Result<>();
+
+        try {
+            String info = vehicleInfoService.updateVehicleInfo(vehicleInfo);
+            result.setData(info);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+
+        return result;
+    }
+
+
+    @ApiOperation("插入停车信息")
+    @PostMapping("/insert")
+    public Result<String> insertVehicleInfo(VehicleInfo vehicleInfo) {
+        Result<String> result = new Result<>();
+
+        try {
+            String info = vehicleInfoService.insertVehicleInfo(vehicleInfo);
+            result.setData(info);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+
+        return result;
+    }
+
+
+    @ApiOperation("根据ID删除停车信息")
+    @DeleteMapping("/delete/{id}")
+    public Result<String> deleteVehicleInfo(@PathVariable Long id) {
+        Result<String> result = new Result<>();
+
+        try {
+            String info = vehicleInfoService.deleteVehicleInfo(id);
+            result.setData(info);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
         }
 
