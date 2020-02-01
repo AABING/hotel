@@ -1,4 +1,5 @@
 package com.face.hotel.controller;
+import com.face.hotel.entity.RoomInfo;
 import com.face.hotel.entity.StaffInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
@@ -7,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,6 +51,47 @@ public class StaffController {
             result.setData(staffInfo);
         } catch (Exception e) {
             result.setStatus(ResultCode.NOT_FIND);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+    @ApiOperation("新增员工信息")
+    @PostMapping("/insert")
+    public Result<String> insertStaffInfo(StaffInfo staffInfo) {
+        Result<String> result = new Result<>();
+        try {
+            String s = staffInfoService.insertStaffInfo(staffInfo);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+
+    @ApiOperation("修改员工信息")
+    @PutMapping("/update")
+    public Result<String> updateStaffInfo(StaffInfo staffInfo) {
+        Result<String> result = new Result<>();
+        try {
+            String s = staffInfoService.updateStaffInfo(staffInfo);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+        }
+        return result;
+    }
+
+    @ApiOperation("删除员工信息")
+    @DeleteMapping("/delete/{id}")
+    public Result<String> deleteStaffInfo(@PathVariable String id) {
+        Result<String> result = new Result<>();
+        try {
+            String s = staffInfoService.deleteStaffInfo(id);
+            result.setData(s);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
         }
         return result;

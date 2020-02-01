@@ -29,4 +29,31 @@ public class StaffInfoServiceImpl implements StaffInfoService {
     public StaffInfo getStaffInfoById(String id){
         return staffInfoMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public String insertStaffInfo(StaffInfo staffInfo) throws Exception {
+        int result = staffInfoMapper.insert(staffInfo);
+        if (result != 1) {
+            throw new Exception("新增失败");
+        }
+        return "新增成功";
+    }
+
+    @Override
+    public String updateStaffInfo(StaffInfo staffInfo) throws Exception {
+        int result = staffInfoMapper.updateByPrimaryKeySelective(staffInfo);
+        if (result != 1) {
+            throw new Exception("修改失败");
+        }
+        return "修改成功";
+    }
+
+    @Override
+    public String deleteStaffInfo(String id) throws Exception {
+        int result = staffInfoMapper.deleteByPrimaryKey(id);
+        if (result != 1) {
+            throw new Exception("删除失败");
+        }
+        return "删除成功";
+    }
 }

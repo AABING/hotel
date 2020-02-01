@@ -1,6 +1,7 @@
 package com.face.hotel.service;
 
 import com.face.hotel.entity.BillInfo;
+import com.face.hotel.entity.RoomInfo;
 
 import java.util.List;
 
@@ -27,5 +28,30 @@ public interface BillInfoService {
     */
     List<BillInfo> getBillInfoByUserId(Long userId);
 
+    /**
+    *@Author: NaiPan
+    *@Description: 新增账单信息
+    *@Param: billInfo
+    *@return: String
+    *@date: 2020/2/1
+    */
+    String insertBillInfo(BillInfo billInfo) throws Exception;
 
+    /**
+    *@Author: NaiPan
+    *@Description: 更新账单信息
+    *@Param: billInfo
+    *@return: String
+    *@date: 2020/2/1
+    */
+    String updateBillInfo(BillInfo billInfo) throws Exception;
+
+    /**
+    *@Author: NaiPan
+    *@Description: 删除账单信息
+    *@Param: id
+    *@return: String
+    *@date: 2020/2/1
+    */
+    String deleteBillInfo(String id) throws Exception;
 }
