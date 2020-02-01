@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/vehicle")
 @Slf4j
 @Api("停车记录信息表")
-public class VehicleInfoController {
+public class VehicleController {
 
     @Autowired
     VehicleInfoService vehicleInfoService;
