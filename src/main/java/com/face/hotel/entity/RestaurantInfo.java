@@ -2,7 +2,7 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
+import javax.persistence.Id;
 
 /**
  * Description: 餐厅消费记录表
@@ -15,11 +15,12 @@ import java.sql.Timestamp;
 @Data
 public class RestaurantInfo {
 
+  @Id
   private Long id;
 
   private Double amount;
 
-  private Timestamp time;
+  private String time;
 
   private String tradeOrderNo;
 

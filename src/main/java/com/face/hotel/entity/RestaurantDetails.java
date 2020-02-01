@@ -2,6 +2,8 @@ package com.face.hotel.entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
+
 /**
  * Description:
  *
@@ -13,6 +15,7 @@ import lombok.Data;
 @Data
 public class RestaurantDetails {
 
+  @Id
   private Long id;
 
   private String name;
@@ -20,6 +23,8 @@ public class RestaurantDetails {
   private Double price;
 
   private Integer number;
+
+  private Double totalPrice;
 
   private Long infoId;
 

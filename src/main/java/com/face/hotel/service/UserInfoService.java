@@ -60,4 +60,5 @@ public interface UserInfoService {
      * @date 2020/01/31 16:23:33
      */
     String deleteUserInfo(String id) throws Exception;
+
 }

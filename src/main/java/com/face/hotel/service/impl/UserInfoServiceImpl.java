@@ -42,7 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public String updateUserInfo(UserInfo userInfo) throws Exception {
-        int result = userInfoMapper.updateByPrimaryKey(userInfo);
+        int result = userInfoMapper.updateByPrimaryKeySelective(userInfo);
         if (result != 1) {
             throw new Exception("修改失败");
         }

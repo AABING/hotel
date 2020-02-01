@@ -2,5 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.face.hotel.mapper.RestaurantDetailsMapper">
 
+    <select id="getRestaurantDetailsByUserId" resultType="com.face.hotel.entity.RestaurantDetails">
+        SELECT
+          id,
+          NAME,
+          price,
+          number,
+          total_price,
+          info_id
+        FROM
+          restaurant_details
+        WHERE info_id = #{infoId}
+    </select>
 
 </mapper>

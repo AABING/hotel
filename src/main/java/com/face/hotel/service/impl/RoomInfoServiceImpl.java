@@ -40,7 +40,7 @@ public class RoomInfoServiceImpl implements RoomInfoService {
 
     @Override
     public String updateRoomInfo(RoomInfo roomInfo) throws Exception {
-        int result = roomInfoMapper.updateByPrimaryKey(roomInfo);
+        int result = roomInfoMapper.updateByPrimaryKeySelective(roomInfo);
         if (result != 1) {
             throw new Exception("修改失败");
         }

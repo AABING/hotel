@@ -42,7 +42,7 @@ public class UserRoomServiceImpl implements UserRoomService {
 
     @Override
     public String updateUserRoomInfo(UserRoom userRoom) throws Exception {
-        int result = userRoomMapper.updateByPrimaryKey(userRoom);
+        int result = userRoomMapper.updateByPrimaryKeySelective(userRoom);
         if (result != 1) {
             throw new Exception("修改失败");
         }
