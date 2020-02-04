@@ -41,7 +41,7 @@ public class VehicleInfo {
      * 收费率：按小时计算，费用计算方式为(用户退房时间-进入车位时间)×收费率
      */
     @ApiModelProperty("收费率：按小时计算，费用计算方式为(用户退房时间-进入车位时间)×收费率")
-    private String chargeRates;
+    private Integer chargeRates;
 
     /**
      * 进入车位时间

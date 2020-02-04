@@ -15,4 +15,10 @@ public interface VehicleInfoMapper extends Mapper<VehicleInfo> {
 
     List<VehicleInfo> selectAllVehicleInfo();
 
+    /**
+     * 得到最近一次进入该车位的停车记录信息
+     * @param uid
+     * @return
+     */
+    VehicleInfo selectLastVehicleIn(Long uid);
 }

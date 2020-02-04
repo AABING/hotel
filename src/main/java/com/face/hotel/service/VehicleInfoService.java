@@ -50,4 +50,11 @@ public interface VehicleInfoService {
      * @throws Exception
      */
     String deleteVehicleInfo(Long id) throws Exception;
+
+    /**
+     * 得到最近一次进入该车位的停车记录信息
+     * @param uid
+     * @return
+     */
+    VehicleInfo getLastVehicleIn(Long uid);
 }

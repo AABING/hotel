@@ -66,5 +66,11 @@ public class VehicleInfoServiceImpl implements VehicleInfoService {
         return "删除停车信息成功！";
     }
 
+    @Override
+    public VehicleInfo getLastVehicleIn(Long uid) {
+        VehicleInfo vehicleInfo = vehicleInfoMapper.selectLastVehicleIn(uid);
+        return vehicleInfo;
+    }
+
 
 }
