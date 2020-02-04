@@ -57,4 +57,12 @@ public interface GymInfoService {
    */
     String deleteGymInfo(String id) throws Exception;
 
+    /**
+    *@Author: NaiPan
+    *@Description: 获取用户最后一次在健身房消费的记录
+    *@Param: uid
+    *@return: com.face.hotel.entity.GymInfo
+    *@date: 2020/2/4
+    */
+    GymInfo getLastGymInfo(Long uid) throws Exception;
 }

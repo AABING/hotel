@@ -57,4 +57,9 @@ public class GymInfoServiceImpl implements GymInfoService {
         }
         return "删除成功";
     }
+
+    @Override
+    public GymInfo getLastGymInfo(Long uid) {
+        return gymInfoMapper.getLastGymInfo(uid);
+    }
 }

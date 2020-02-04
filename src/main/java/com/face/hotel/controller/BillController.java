@@ -1,7 +1,6 @@
 package com.face.hotel.controller;
 
 import com.face.hotel.entity.BillInfo;
-import com.face.hotel.entity.RoomInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.BillInfoService;

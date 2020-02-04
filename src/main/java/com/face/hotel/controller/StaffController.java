@@ -1,5 +1,5 @@
 package com.face.hotel.controller;
-import com.face.hotel.entity.RoomInfo;
+
 import com.face.hotel.entity.StaffInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
