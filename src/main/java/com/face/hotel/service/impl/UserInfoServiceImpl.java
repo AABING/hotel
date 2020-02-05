@@ -57,4 +57,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         return "删除成功";
     }
+
+    @Override
+    public UserInfo getUserInfoByCardNumber(String cardNumber) {
+        return userInfoMapper.getUserInfoByCardNumber(cardNumber);
+    }
+
+    @Override
+    public UserInfo getUserInfoByFace(String faceMessage) {
+        return userInfoMapper.getUserInfoByFace(faceMessage);
+    }
 }

@@ -29,6 +29,6 @@ public class UserRoom {
 
   private Integer effect;
 
-  private Integer clearing;
+  private Integer vehicle;
 
 }

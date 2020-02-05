@@ -9,7 +9,7 @@
       check_in_time,
       check_out_time,
       effect,
-      clearing
+      vehicle
     </sql>
 
     <select id="getUserRoomById" resultType="com.face.hotel.entity.UserRoom">

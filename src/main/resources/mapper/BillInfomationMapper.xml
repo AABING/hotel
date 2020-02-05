@@ -11,6 +11,7 @@
         time,
         transaction_id,
         shop_id,
+        flag,
         user_id,
         note
     </sql>
@@ -21,5 +22,14 @@
         FROM
             bill_info
         WHERE user_id = #{userId}
+    </select>
+
+    <select id="getBillDebt" resultType="java.lang.Integer">
+        SELECT
+          SUM(cost)
+        FROM
+          bill_info
+        WHERE user_id = #{userId}
+          AND flag = 0
     </select>
 </mapper>

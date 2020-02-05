@@ -22,4 +22,14 @@ public interface BillInfoMapper extends Mapper<BillInfo> {
     *@date: 2020/1/31
     */
     List<BillInfo> selectBillInfoByUserId(Long userId);
+
+    /**
+     * description: 查询是否有未计入用户表的消费
+     *
+     * @param userId 用户id
+     * @return java.lang.Integer
+     * @author LiBingxiang
+     * @date 2020/02/05 14:09:56
+     */
+    Integer getBillDebt(Long userId);
 }

@@ -29,4 +29,9 @@ public class BillInfoServiceImpl implements BillInfoService {
     public List<BillInfo> getBillInfoByUserId(Long userId) {
         return billInfoMapper.selectBillInfoByUserId(userId);
     }
+
+    @Override
+    public Integer getBillDebt(Long userId) {
+        return billInfoMapper.getBillDebt(userId);
+    }
 }

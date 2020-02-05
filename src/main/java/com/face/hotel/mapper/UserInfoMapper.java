@@ -11,4 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  **/
 public interface UserInfoMapper extends Mapper<UserInfo> {
 
+    UserInfo getUserInfoByCardNumber(String cardNumber);
+
+    UserInfo getUserInfoByFace(String faceMessage);
 }

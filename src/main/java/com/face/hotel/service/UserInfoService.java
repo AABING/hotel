@@ -61,4 +61,23 @@ public interface UserInfoService {
      */
     String deleteUserInfo(String id) throws Exception;
 
+    /**
+     * description: 通过身份证号获取用户信息
+     *
+     * @param cardNumber 身份证号
+     * @return com.face.hotel.entity.UserInfo
+     * @author LiBingxiang
+     * @date 2020/02/04 17:15:37
+     */
+    UserInfo getUserInfoByCardNumber(String cardNumber);
+
+    /**
+     * description: 通过人脸信息查找用户
+     *
+     * @param faceMessage 人脸信息
+     * @return com.face.hotel.entity.UserInfo
+     * @author LiBingxiang
+     * @date 2020/02/04 21:21:56
+     */
+    UserInfo getUserInfoByFace(String faceMessage);
 }

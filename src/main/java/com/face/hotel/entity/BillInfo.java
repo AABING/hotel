@@ -32,6 +32,8 @@ public class BillInfo {
 
     private String shopId;
 
+    private Integer flag;
+
     private Long userId;
 
     private String note;

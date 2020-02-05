@@ -28,4 +28,13 @@ public interface BillInfoService {
     List<BillInfo> getBillInfoByUserId(Long userId);
 
 
+    /**
+     * description:
+     *
+     * @param userId	 
+     * @return java.lang.Integer
+     * @author LiBingxiang
+     * @date 2020/02/04 22:51:55
+     */
+    Integer getBillDebt(Long userId);
 }
