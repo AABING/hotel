@@ -34,4 +34,31 @@ public class BillInfoServiceImpl implements BillInfoService {
     public Integer getBillDebt(Long userId) {
         return billInfoMapper.getBillDebt(userId);
     }
+
+    @Override
+    public String insertBillInfo(BillInfo billInfo) throws Exception {
+        int result = billInfoMapper.insert(billInfo);
+        if (result != 1) {
+            throw new Exception("新增失败");
+        }
+        return "新增成功";
+    }
+
+    @Override
+    public String updateBillInfo(BillInfo billInfo) throws Exception {
+        int result = billInfoMapper.updateByPrimaryKeySelective(billInfo);
+        if (result != 1) {
+            throw new Exception("修改失败");
+        }
+        return "修改成功";
+    }
+
+    @Override
+    public String deleteBillInfo(String id) throws Exception {
+        int result = billInfoMapper.deleteByPrimaryKey(id);
+        if (result != 1) {
+            throw new Exception("删除失败");
+        }
+        return "删除成功";
+    }
 }

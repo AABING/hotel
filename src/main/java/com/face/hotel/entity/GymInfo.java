@@ -26,6 +26,8 @@ public class GymInfo {
 
   private Double cost;
 
+  private Double chargeRates;
+
   private String note;
 
 }

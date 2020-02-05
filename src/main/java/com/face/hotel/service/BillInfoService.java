@@ -27,11 +27,34 @@ public interface BillInfoService {
     */
     List<BillInfo> getBillInfoByUserId(Long userId);
 
+    /**
+     *@Author: NaiPan
+     *@Description: 新增账单
+     *@return: java.util.List<com.face.hotel.entity.BillInfo>
+     *@date: 2020/2/3
+     */
+    String insertBillInfo(BillInfo billInfo) throws Exception;
 
     /**
-     * description:
+     *@Author: NaiPan
+     *@Description: 修改账单
+     *@return: java.util.List<com.face.hotel.entity.BillInfo>
+     *@date: 2020/2/3
+     */
+    String updateBillInfo(BillInfo billInfo) throws Exception;
+
+    /**
+     *@Author: NaiPan
+     *@Description: 删除账单
+     *@return: java.util.List<com.face.hotel.entity.BillInfo>
+     *@date: 2020/2/3
+     */
+    String deleteBillInfo(String id) throws Exception;
+
+    /**
+     * description: 查询未计入用户表的消费
      *
-     * @param userId	 
+     * @param userId
      * @return java.lang.Integer
      * @author LiBingxiang
      * @date 2020/02/04 22:51:55
