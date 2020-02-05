@@ -7,10 +7,10 @@
         select id, user_id, car_number, charge_rates, time_in, time_out, status
         from vehicle_info;
     </select>
-    <select id="selectLastVehicleIn" parameterType="Integer" resultType="com.face.hotel.entity.VehicleInfo">
+    <select id="selectLastVehicleIn" parameterType="Long" resultType="com.face.hotel.entity.VehicleInfo">
         select *
         from vehicle_info
-        Where user_id = 1 and time_out is null
+        Where user_id = #{uid} and time_out is null
         group by id
         order by id DESC
         limit 0,1;

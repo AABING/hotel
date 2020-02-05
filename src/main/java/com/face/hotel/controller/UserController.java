@@ -4,11 +4,13 @@ import com.face.hotel.entity.UserInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.UserInfoService;
+import com.face.hotel.utils.UploadUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -95,6 +97,25 @@ public class UserController {
             result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
         }
+        return result;
+    }
+
+    @PostMapping("/uploadFaceInfo")
+    @ApiOperation("上传人面信息")
+    public Result<String> uploadFaceInfo(@RequestParam("faceInfo") MultipartFile faceInfo) {
+        Result<String> result = new Result<>();
+        try {
+            UploadUtil.uploadFaceInfo(faceInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setMassage(e.getMessage());
+            return result;
+        }
+        String faceName = faceInfo.getOriginalFilename();
+
+        result.setData(faceInfo.toString());
+        result.setMassage(faceName);
+
         return result;
     }
 }

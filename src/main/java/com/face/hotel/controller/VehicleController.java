@@ -1,22 +1,18 @@
 package com.face.hotel.controller;
 
-import com.face.hotel.entity.UserInfo;
 import com.face.hotel.entity.VehicleInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
-import com.face.hotel.service.UserInfoService;
 import com.face.hotel.service.VehicleInfoService;
+import com.face.hotel.component.FaceRecognitionComponent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
-import java.security.PublicKey;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +34,8 @@ public class VehicleController {
     @Autowired
     UserController userController;
 
+    @Resource
+    FaceRecognitionComponent faceRecognitionComponent;
 
     @Autowired
     VehicleInfoService vehicleInfoService;
@@ -127,36 +125,41 @@ public class VehicleController {
 
     @ApiOperation("停车入库")
     @PostMapping("/vehicleIn")
-    public Result<Boolean> vehicleIn(Long uid) {
+    public Result<Boolean> vehicleIn(Long uid, @RequestParam("face2Info") MultipartFile face2Info) {
         Result<Boolean> result = new Result<>();
+        result.setData(false);
 
-        /*
-          人面识别
-         */
-        // 得到人面信息
-        Result<UserInfo> userInfo = userController.getUserInfoById(uid.toString());
-        String face = userInfo.getData().getFace();
-        // TODO 传入人面信息，进行人面识别(此处假设识别失败)。
-        Boolean faceRecognition = Boolean.TRUE;
-        // 人面识别失败则不能同行。
+        // ①人面识别
+        Boolean faceRecognition = Boolean.FALSE;
+        try {
+            /*
+            人面识别异常：
+                1、用户不存在
+                2、用户用户信息存在，但是用户未注册人面信息
+                3、用于人面检测的零时文件格式不对
+             */
+
+            faceRecognition = faceRecognitionComponent.faceRecognition(uid, face2Info);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+            return result;
+        }
+        // 人面匹配失败则不能通行。
         if (!faceRecognition) {
-            result.setData(false);
             result.setMassage("人面识别失败");
             return result;
         }
 
-        /*
-          检测车位是否有车
-         */
+        // ②检测车位是否有车
         VehicleInfo lastVehicleIn = vehicleInfoService.getLastVehicleIn(uid);
         // 如果查询到用户最近一次停车却未取车的情况，则取车异常
         if (null != lastVehicleIn) {
-            result.setData(false);
             result.setMassage("该车位已停放车辆");
             return result;
         }
 
-        // 更新停车信息
+        // ③更新停车信息
         VehicleInfo vehicleInfo = new VehicleInfo();
         vehicleInfo.setUserId(uid);
         // 设置收费率
@@ -168,7 +171,7 @@ public class VehicleController {
         // 设置车位状态为正在使用
         vehicleInfo.setStatus("正在使用");
 
-        // 记录入库信息
+        // ④记录入库信息
         try {
             vehicleInfoService.insertVehicleInfo(vehicleInfo);
             //result.setMassage(userInfo.getData().toString());
@@ -184,43 +187,48 @@ public class VehicleController {
 
     @ApiOperation("取车")
     @PutMapping("/vehicleOut")
-    public Result<Boolean> vehicleOut(Long uid) {
+    public Result<Boolean> vehicleOut(Long uid, @RequestParam("face2Info") MultipartFile face2Info) {
         Result<Boolean> result = new Result<>();
+        result.setData(false);
 
-        /*
-          人面识别
-         */
-        // 得到人面信息
-        UserInfo userInfo = userController.getUserInfoById(uid.toString()).getData();
-        String face = userInfo.getFace();
-        // TODO 传入人面信息，进行人面识别(此处假设识别失败)。
-        Boolean faceRecognition = Boolean.TRUE;
-        // 人面识别失败则不能通行。
+        // ①人面识别
+        Boolean faceRecognition = Boolean.FALSE;
+        try {
+            /*
+            人面识别异常：
+                1、用户不存在
+                2、用户用户信息存在，但是用户未注册人面信息
+                3、用于人面检测的零时文件格式不对
+             */
+            faceRecognition = faceRecognitionComponent.faceRecognition(uid, face2Info);
+        } catch (Exception e) {
+            result.setStatus(ResultCode.ERROR);
+            result.setMassage(e.getMessage());
+            return result;
+        }
+        // 人面匹配失败则不能通行。
         if (!faceRecognition) {
-            result.setData(false);
             result.setMassage("人面识别失败");
             return result;
         }
 
-        /*
-          检测车位是否有车
-         */
+        // ②检测车位是否有车
         VehicleInfo lastVehicleIn = vehicleInfoService.getLastVehicleIn(uid);
         // 如果未查到用户最近一次停车却未取车的情况，则取车异常
         if (null == lastVehicleIn) {
-            result.setData(false);
             result.setMassage("该车位暂时未停放车辆");
             return result;
         }
 
 
+        // ③更新取车信息
         // 设置车辆离开时间
         lastVehicleIn.setTimeOut(new Date());
         // 设置当前车位状态
         lastVehicleIn.setStatus("空闲");
 
         try {
-            // 更新数据库
+            // ④更新数据库
             vehicleInfoService.updateVehicleInfo(lastVehicleIn);
             result.setData(true);
         } catch (Exception e) {

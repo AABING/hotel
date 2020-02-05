@@ -1,4 +1,4 @@
-package com.face.hotel.annotion;
+package com.face.hotel.annotation;
 
 import java.lang.annotation.*;
 
