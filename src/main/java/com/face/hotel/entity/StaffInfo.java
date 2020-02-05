@@ -34,8 +34,20 @@ public class StaffInfo {
 
   private String position;
 
-  private Integer wage;
-
   private String description;
+
+  private Integer mark;
+
+  private Long checking;
+
+  private Long late;
+
+  private Long absenteeism;
+
+  private Double salary;
+
+  private Date workBegin;
+
+  private Date workEnd;
 
 }
