@@ -1,9 +1,13 @@
 package com.face.hotel.entity;
 
 
+import com.sun.javafx.beans.IDProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.persistence.Id;
+import java.util.Date;
 
 
 /**
@@ -19,14 +23,10 @@ public class EquipmentInfo {
     /**
      * 设备ID
      */
+    @Id
     @ApiModelProperty("设备ID")
     private Long id;
 
-    /**
-     * 设备编号
-     */
-    @ApiModelProperty("设备编号")
-    private Long number;
 
     /**
      * 设备当前所在位置
@@ -44,7 +44,7 @@ public class EquipmentInfo {
      * 设备运行时间
      */
     @ApiModelProperty("设备运行时间")
-    private String runTime;
+    private Date startTime;
 
     /**
      * 人面识别总次数
