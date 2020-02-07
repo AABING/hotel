@@ -24,6 +24,8 @@ public class StaffInfo {
 
   private Integer sex;
 
+  private String face;
+
   private Date birth;
 
   private String cardNumber;

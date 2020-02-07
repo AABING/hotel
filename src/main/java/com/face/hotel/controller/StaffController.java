@@ -1,16 +1,20 @@
 package com.face.hotel.controller;
 
 
+import com.face.hotel.component.FaceRecognitionComponent;
 import com.face.hotel.entity.StaffInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.StaffInfoService;
+import com.face.hotel.utils.UploadUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,6 +32,9 @@ import java.util.List;
 public class StaffController {
     @Autowired
     private StaffInfoService staffInfoService;
+
+    @Resource
+    private FaceRecognitionComponent faceRecognitionComponent;
 
     @ApiOperation("获取所有员工信息")
     @GetMapping("/get")
@@ -95,6 +102,27 @@ public class StaffController {
             result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
         }
+        return result;
+    }
+
+    @ApiOperation("员工人面识别")
+    @PostMapping("/faceRecognition")
+    public Result<StaffInfo> staffFaceRecognition(@RequestParam("faceInfo")MultipartFile faceInfo) {
+        Result<StaffInfo> result = new Result<>();
+        result.setMassage("人面识别未通过！");
+        
+        StaffInfo staff = null;
+        try {
+            staff = faceRecognitionComponent.staffFaceRecognition(faceInfo);
+        } catch (Exception e) {
+            result.setMassage(e.getMessage());
+            result.setStatus(ResultCode.NOT_FIND);
+        }
+        if (null != staff) {
+            result.setMassage("人面识别通过！");
+        }
+        result.setData(staff);
+
         return result;
     }
 }
