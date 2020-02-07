@@ -36,13 +36,9 @@ public class StaffInfo {
 
   private String description;
 
-  private Integer mark;
-
   private Long checking;
 
   private Long late;
-
-  private Long absenteeism;
 
   private Double salary;
 
