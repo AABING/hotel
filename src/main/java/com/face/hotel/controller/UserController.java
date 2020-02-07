@@ -110,7 +110,7 @@ public class UserController {
     }
 
     @ApiOperation("用户入住")
-    @PutMapping
+    @PutMapping("/userCheckIn")
     public Result<String> userCheckIn(String faceMessage) {
         Result<String> result = new Result<>();
         // 1、判断人脸与身份证是否为同一人
@@ -155,7 +155,7 @@ public class UserController {
     }
 
     @ApiOperation("用户退房")
-    @PutMapping
+    @PutMapping("/userCheckOut")
     public Result<String> userCheckOut(String faceMessage) {
         Result<String> result = new Result<>();
         // 1、提取人脸识别信息，根据人脸信息查找用户
@@ -183,3 +183,4 @@ public class UserController {
         }
         return result;
     }
+}

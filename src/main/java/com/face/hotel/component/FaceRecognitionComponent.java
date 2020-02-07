@@ -7,11 +7,12 @@ import com.arcsoft.face.enums.ErrorInfo;
 import com.arcsoft.face.enums.ImageFormat;
 import com.arcsoft.face.toolkit.ImageInfo;
 import com.face.hotel.controller.FaceRecordsController;
+import com.face.hotel.controller.StaffController;
 import com.face.hotel.controller.UserController;
 import com.face.hotel.entity.FaceRecords;
+import com.face.hotel.entity.StaffInfo;
 import com.face.hotel.entity.UserInfo;
 import com.face.hotel.pojo.Result;
-import com.face.hotel.service.UserInfoService;
 import com.face.hotel.utils.MultipartFileToFileUtil;
 import com.face.hotel.utils.UploadUtil;
 import org.springframework.stereotype.Component;
@@ -40,8 +41,14 @@ public class FaceRecognitionComponent {
     @Resource
     private UserController userController;
 
+    @Resource
+    private StaffController staffController;
+
     private FaceEngine faceEngine = null;
 
+    /**
+     * 初始化人面识别的引擎
+     */
     private void doIniFacetEngine() {
         String appId = "Ao18aYt1HuTvLjMJ2i2wmpVbv9JsCWMFMMn2Z4rsvB5K";
         String sdkKey = "C2ABrNmrLyg25LdrAjNaFsbH1MJHVz3thF4Lh5co9cEe";
@@ -79,6 +86,14 @@ public class FaceRecognitionComponent {
         }
     }
 
+
+    /**
+     * 根据用户ID进行人面识别
+     * @param uid
+     * @param face2Info
+     * @return
+     * @throws Exception
+     */
     public Boolean faceRecognition(Long uid, MultipartFile face2Info) throws Exception {
 
         Boolean result = false;
@@ -97,8 +112,10 @@ public class FaceRecognitionComponent {
         if (null == face1Name) {
             throw new Exception("当前用户暂未录入人面信息！");
         }
-        // 初始化人面识别引擎
-        doIniFacetEngine();
+        // 初始化引擎
+        if (null == faceEngine) {
+            doIniFacetEngine();
+        }
 
         // 得到上传的人面信息零时文件
         File face2 = null;
@@ -110,7 +127,7 @@ public class FaceRecognitionComponent {
 
         // 人脸检测
         // 得到用户face信息在服务器上的位置
-        String face1Path = UploadUtil.FACE_PATH + File.separator +face1Name;
+        String face1Path = UploadUtil.USER_FACE_PATH + File.separator +face1Name;
         ImageInfo imageInfo = getRGBData(new File(face1Path));
         List<FaceInfo> faceInfoList = new ArrayList<>();
         int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
@@ -170,12 +187,98 @@ public class FaceRecognitionComponent {
         faceRecord.setUserId(uid);
         faceRecordsController.insertFaceRecord(faceRecord);
 
-        // 卸载人面识别引擎
-        unInitFaceEngine();
-
         return result;
     }
 
+    /**
+     * 员工人面信息识别
+     * @param face2Info
+     * @return
+     * @throws Exception
+     */
+    public StaffInfo staffFaceRecognition(MultipartFile face2Info) throws Exception {
+
+        // 得到上传的人面信息零时文件
+        File face2 = null;
+        try {
+            face2 = MultipartFileToFileUtil.multipartFileToFile(face2Info);
+        } catch (Exception e) {
+            throw new Exception("人面信息格式非法，请重新上传！");
+        }
+        // 初始化引擎
+        if (null == faceEngine) {
+            doIniFacetEngine();
+        }
+        // 人脸检测2
+        ImageInfo imageInfo2 = getRGBData(face2);
+        // 删除人面识别零时文件
+        MultipartFileToFileUtil.delteTempFile(face2);
+        List<FaceInfo> faceInfoList2 = new ArrayList<>();
+        int detectCode2 = faceEngine.detectFaces(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList2);
+        // System.out.println(faceInfoList2);
+        // 特征提取2
+        FaceFeature faceFeature2 = new FaceFeature();
+        int extractCode2 = faceEngine.extractFaceFeature(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList2.get(0), faceFeature2);
+        // System.out.println("特征值大小：" + faceFeature2.getFeatureData().length);
+
+        // 便利全体员工，得到每一个员工的人面信息
+        List<StaffInfo> staffs = staffController.getAllStaffInfo().getData();
+        for (StaffInfo staff: staffs) {
+            // 得到该员工的人面信息
+            String face1Name = null;
+            face1Name = staff.getFace();
+            if (null ==face1Name) {
+                // 如果检测到当前员工没有Face信息，则跳过该员工
+                System.out.println("Staff: " + staff.getId() + " face info is null.");
+                continue;
+            }
+            // 人脸检测
+            // 得到员工face信息在服务器上的位置
+            String face1Path = UploadUtil.STAFF_FACE_PATH + File.separator +face1Name;
+            ImageInfo imageInfo = getRGBData(new File(face1Path));
+            List<FaceInfo> faceInfoList = new ArrayList<>();
+            int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
+            // System.out.println(faceInfoList);
+
+            // 特征提取
+            FaceFeature faceFeature = new FaceFeature();
+            int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
+            // System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
+
+            // 特征比对
+            FaceFeature targetFaceFeature = new FaceFeature();
+            targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
+            FaceFeature sourceFaceFeature = new FaceFeature();
+            sourceFaceFeature.setFeatureData(faceFeature2.getFeatureData());
+            FaceSimilar faceSimilar = new FaceSimilar();
+            int compareCode = faceEngine.compareFaceFeature(targetFaceFeature, sourceFaceFeature, faceSimilar);
+            System.out.println("Staff" + staff.getId() + "相似度：" + faceSimilar.getScore());
+
+            // 人脸属性检测属性设置
+            FunctionConfiguration configuration = new FunctionConfiguration();
+            configuration.setSupportAge(true);
+            configuration.setSupportFace3dAngle(true);
+            configuration.setSupportGender(true);
+            configuration.setSupportLiveness(true);
+            int processCode = faceEngine.process(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList, configuration);
+
+            // 活体检测
+            List<LivenessInfo> livenessInfoList = new ArrayList<>();
+            int livenessCode = faceEngine.getLiveness(livenessInfoList);
+            // System.out.println("活体：" + livenessInfoList.get(0).getLiveness());
+
+            // 如果相似度大于0.75，并且活体检测为1，则人面识别通过。
+            if (faceSimilar.getScore() > 0.75 && livenessInfoList.get(0).getLiveness() == 1) {
+                return staff;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 卸载人面识别引擎
+     */
     private void unInitFaceEngine() {
         //引擎卸载
         int unInitCode = faceEngine.unInit();
