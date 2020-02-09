@@ -1,6 +1,9 @@
 package com.face.hotel.controller;
 
+import com.face.hotel.component.FaceRecognitionComponent;
 import com.face.hotel.entity.RoomInfo;
+import com.face.hotel.entity.StaffInfo;
+import com.face.hotel.entity.UserRoom;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.RoomInfoService;
@@ -28,6 +31,12 @@ import java.util.List;
 public class RoomController {
     @Autowired
     private RoomInfoService roomInfoService;
+
+    @Autowired
+    private UserRoomController userRoomController;
+
+    @Autowired
+    FaceRecognitionComponent faceRecognitionComponent;
 
     @ApiOperation("获取所有房间信息")
     @GetMapping("/get")
@@ -99,11 +108,66 @@ public class RoomController {
         return result;
     }
 
-    @ApiOperation("房间门禁")
+    /**
+     * 房间门禁: 用户退房则员工可以开锁
+     * 用户开锁: 传入人面信息、传入用户ID、传入房间ID。
+     * 员工开锁：传入人面信息，不传入用户ID，传入房间ID！
+     * @param faceInfo
+     * @param uId
+     * @param rId
+     * @return
+     */
+    @ApiOperation("房间门禁: 用户退房则员工可以开锁\n用户开锁: 传入人面信息、传入用户ID、传入房间ID。\n员工开锁：传入人面信息，不传入用户ID，传入房间ID！")
     @PostMapping("/entranceGuard")
-    public Result<Boolean> entranceGuard(@RequestParam("faceInfo") MultipartFile faceInfo,Long rid) {
+    public Result<Boolean> entranceGuard(@RequestParam("faceInfo") MultipartFile faceInfo, Long uId, Long rId) {
         Result<Boolean> result = new Result<>();
+        result.setData(false);
 
+        if (null != uId) {
+            // 当前房间有用户使用时，则只有用户才何以使用该房间
+            try {
+                Boolean aBoolean = faceRecognitionComponent.faceRecognition(uId, faceInfo);
+                result.setData(aBoolean);
+                if (aBoolean) {
+                    result.setMassage("用户： " + uId + " 识别通过！");
+                } else {
+                    result.setMassage("人面识别未通过！");
+                }
+            } catch (Exception e) {
+                result.setMassage(e.getMessage());
+                result.setStatus(ResultCode.NOT_FIND);
+            }
+            return result;
+        }
+
+        // 员工开锁
+        if (null != rId) {
+            RoomInfo roomInfo = roomInfoService.getRoomInfoById(rId.toString());
+            if (null == roomInfo) {
+                result.setMassage("房间号不存在！");
+                result.setStatus(ResultCode.NOT_FIND);
+                return result;
+            }
+            // 当该房间当前无用户使用时，才可以交于员工使用
+            if (roomInfo.getStatus() == 0) {
+                try {
+                    StaffInfo staffInfo = faceRecognitionComponent.staffFaceRecognition(faceInfo);
+                    if (staffInfo.getId() == roomInfo.getStaffId()) {
+                        result.setData(true);
+                        result.setMassage("员工： " + staffInfo.getId() + " 识别通过！");
+                    } else {
+                        result.setMassage("员工信息不匹配！");
+                    }
+                } catch (Exception e) {
+                    result.setMassage(e.getMessage());
+                    result.setStatus(ResultCode.ERROR);
+                }
+            } else {
+                result.setMassage("当前用户暂未退房，只有用户本人可以使用！");
+            }
+            return result;
+        }
+        result.setMassage("请传入房间ID或者用户ID！");
         return result;
     }
 }

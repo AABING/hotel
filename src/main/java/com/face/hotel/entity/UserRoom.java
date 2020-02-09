@@ -20,7 +20,6 @@ public class UserRoom {
   @Id
   private Long userId;
 
-  @Id
   private Long roomId;
 
   private String scheduledTime;
