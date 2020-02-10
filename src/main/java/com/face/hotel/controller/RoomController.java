@@ -123,20 +123,35 @@ public class RoomController {
         Result<Boolean> result = new Result<>();
         result.setData(false);
 
-        if (null != uId) {
-            // 当前房间有用户使用时，则只有用户才何以使用该房间
-            try {
-                Boolean aBoolean = faceRecognitionComponent.faceRecognition(uId, faceInfo);
-                result.setData(aBoolean);
-                if (aBoolean) {
-                    result.setMassage("用户： " + uId + " 识别通过！");
-                } else {
-                    result.setMassage("人面识别未通过！");
-                }
-            } catch (Exception e) {
-                result.setMassage(e.getMessage());
+        // 用户人面识别
+        if (null != uId && null != rId) {
+            // 查询是否有用户入住
+            UserRoom userRoom = userRoomController.getUserRoomById(uId.toString(), rId.toString()).getData();
+            RoomInfo roomInfo = roomInfoService.getRoomInfoById(rId.toString());
+            if (null == roomInfo) {
+                result.setMassage("房间号不存在！");
                 result.setStatus(ResultCode.NOT_FIND);
+                return result;
             }
+            // 确保该用户未退房并且进入的是自己的房间
+            if (null != userRoom && uId == userRoom.getUserId() && roomInfo.getStatus() != 0) {
+                // 当前房间有用户使用时，则只有用户才何以使用该房间
+                try {
+                    Boolean aBoolean = faceRecognitionComponent.userFaceRecognition(uId, faceInfo);
+                    result.setData(aBoolean);
+                    if (aBoolean) {
+                        result.setMassage("用户： " + uId + " 识别通过！");
+                    } else {
+                        result.setMassage("人面识别未通过！");
+                    }
+                } catch (Exception e) {
+                    result.setMassage(e.getMessage());
+                    result.setStatus(ResultCode.NOT_FIND);
+                }
+            } else {
+                result.setMassage("非法用户！");
+            }
+
             return result;
         }
 
@@ -151,10 +166,10 @@ public class RoomController {
             // 当该房间当前无用户使用时，才可以交于员工使用
             if (roomInfo.getStatus() == 0) {
                 try {
-                    StaffInfo staffInfo = faceRecognitionComponent.staffFaceRecognition(faceInfo);
-                    if (staffInfo.getId() == roomInfo.getStaffId()) {
+                    Boolean aBoolean = faceRecognitionComponent.staffFaceRecognition(roomInfo.getStaffId(), faceInfo);
+                    if (aBoolean) {
                         result.setData(true);
-                        result.setMassage("员工： " + staffInfo.getId() + " 识别通过！");
+                        result.setMassage("员工：" + roomInfo.getStaffId() + " 识别通过！");
                     } else {
                         result.setMassage("员工信息不匹配！");
                     }
@@ -167,7 +182,7 @@ public class RoomController {
             }
             return result;
         }
-        result.setMassage("请传入房间ID或者用户ID！");
+        result.setMassage("请传入房间ID！");
         return result;
     }
 }

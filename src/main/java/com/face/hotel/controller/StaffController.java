@@ -6,7 +6,6 @@ import com.face.hotel.entity.StaffInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.StaffInfoService;
-import com.face.hotel.utils.UploadUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -113,7 +112,7 @@ public class StaffController {
         
         StaffInfo staff = null;
         try {
-            staff = faceRecognitionComponent.staffFaceRecognition(faceInfo);
+            staff = faceRecognitionComponent.staffFaceCheckInfo(faceInfo);
         } catch (Exception e) {
             result.setMassage(e.getMessage());
             result.setStatus(ResultCode.NOT_FIND);

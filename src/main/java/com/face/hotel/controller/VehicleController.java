@@ -139,7 +139,7 @@ public class VehicleController {
                 3、用于人面检测的零时文件格式不对
              */
 
-            faceRecognition = faceRecognitionComponent.faceRecognition(uid, face2Info);
+            faceRecognition = faceRecognitionComponent.userFaceRecognition(uid, face2Info);
         } catch (Exception e) {
             result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());
@@ -200,7 +200,7 @@ public class VehicleController {
                 2、用户用户信息存在，但是用户未注册人面信息
                 3、用于人面检测的零时文件格式不对
              */
-            faceRecognition = faceRecognitionComponent.faceRecognition(uid, face2Info);
+            faceRecognition = faceRecognitionComponent.userFaceRecognition(uid, face2Info);
         } catch (Exception e) {
             result.setStatus(ResultCode.ERROR);
             result.setMassage(e.getMessage());

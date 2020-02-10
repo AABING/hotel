@@ -47,6 +47,12 @@ public class FaceRecords {
     private Long userId;
 
     /**
+     * 识别成功后员工的ID，识别未成功则为null；
+     */
+    @ApiModelProperty("识别成功后员工的ID，识别未成功则为null；")
+    private Long staffId;
+
+    /**
      * 人面识别的时间
      */
     @ApiModelProperty("人面识别的时间")
