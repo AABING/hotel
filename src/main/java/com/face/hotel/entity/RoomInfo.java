@@ -18,6 +18,8 @@ public class RoomInfo {
   @Id
   private Long id;
 
+  private Long uId;
+
   private String roomNumber;
 
   private String type;
