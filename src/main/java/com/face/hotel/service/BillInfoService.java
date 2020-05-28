@@ -59,5 +59,5 @@ public interface BillInfoService {
      * @author LiBingxiang
      * @date 2020/02/04 22:51:55
      */
-    Integer getBillDebt(Long userId);
+    Double getBillDebt(Long userId);
 }

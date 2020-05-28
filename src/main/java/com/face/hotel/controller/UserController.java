@@ -1,7 +1,9 @@
 package com.face.hotel.controller;
 
+import com.face.hotel.entity.BillInfo;
 import com.face.hotel.entity.UserInfo;
 import com.face.hotel.entity.UserRoom;
+import com.face.hotel.entity.VehicleInfo;
 import com.face.hotel.pojo.Result;
 import com.face.hotel.pojo.ResultCode;
 import com.face.hotel.service.BillInfoService;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +42,8 @@ public class UserController {
     private BillInfoService billInfoService;
     @Autowired
     private VehicleInfoService vehicleInfoService;
+
+    private SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @ApiOperation("获取所有用户信息")
     @GetMapping("/get")
@@ -109,8 +115,22 @@ public class UserController {
         return result;
     }
 
+    @ApiOperation("用户预订房间")
+    @PostMapping("/book/{userId}/{roomId}")
+    public Result<String> bookRoom(UserRoom userRoom) {
+        Result<String> result = new Result<>();
+        userRoom.setScheduledTime(s.format(new Date()));
+        try {
+            userRoomService.insertUserRoomInfo(userRoom);
+        } catch (Exception e) {
+            result.setData("预订失败");
+        }
+        return result;
+    }
+
     @ApiOperation("用户入住")
     @PutMapping("/userCheckIn")
+    @PostMapping("/checkIn")
     public Result<String> userCheckIn(String faceMessage) {
         Result<String> result = new Result<>();
         // 1、判断人脸与身份证是否为同一人
@@ -130,6 +150,7 @@ public class UserController {
                 if (bool1 && bool2) {
                     UserRoom userRoom = new UserRoom();
                     userRoom.setUserId(userInfo.getId());
+                    userRoom.setCheckInTime(s.format(new Date()));
                     userRoom.setEffect(1);
                     userInfo.setStayNumber(userInfo.getStayNumber() + 1);
                     // 储存人脸信息，应从人证识别信息中获取
@@ -155,7 +176,7 @@ public class UserController {
     }
 
     @ApiOperation("用户退房")
-    @PutMapping("/userCheckOut")
+    @PostMapping("/checkOut")
     public Result<String> userCheckOut(String faceMessage) {
         Result<String> result = new Result<>();
         // 1、提取人脸识别信息，根据人脸信息查找用户
@@ -164,8 +185,51 @@ public class UserController {
             result.setData("人脸认证失败，请重试或人工办理");
         } else {
             Long userId = userInfo.getId();
-            // 2、查询是否有未计入用户表的消费
-            Integer debt = billInfoService.getBillDebt(userId);
+
+            // 2、将停车费计入消费流水表
+            VehicleInfo vehicleInfo = vehicleInfoService.getVehicleInfo(userId);
+            if (vehicleInfo.getStatus() == 1) {
+                long timeIn;
+                try {
+                    timeIn = s.parse(vehicleInfo.getIn()).getTime();
+                } catch (Exception e) {
+                    result.setData("系统出错，请重试！");
+                    return result;
+                }
+                long hour = (System.currentTimeMillis() - timeIn) / 3600000;
+                double cost = Double.parseDouble(vehicleInfo.getChargeRates()) * hour;
+
+                // 3、存入消费流水表
+                BillInfo billInfo = new BillInfo();
+                billInfo.setCost(cost);
+                billInfo.setName("停车消费");
+                billInfo.setDescription("停车消费");
+                billInfo.setFullName("停车消费");
+                billInfo.setTime(s.format(new Date()));
+                billInfo.setTransactionId("123456");
+                billInfo.setShopId("123456");
+                billInfo.setFlag(0);
+                billInfo.setUserId(userId);
+                try {
+                    billInfoService.insertBillInfo(billInfo);
+                } catch (Exception e) {
+                    result.setData("系统出错，请重试！");
+                    return result;
+                }
+                // 4、待消费金额存入用户使用表中,将消费流水表flag设为1
+                userInfo.setDebt(userInfo.getDebt() + cost);
+                billInfo.setFlag(1);
+                try {
+                    userInfoService.updateUserInfo(userInfo);
+                    billInfoService.updateBillInfo(billInfo);
+                } catch (Exception e) {
+                    result.setData("系统出错，请重试！");
+                    return result;
+                }
+            }
+
+            // 3、查询是否有未计入用户表的消费
+            Double debt = billInfoService.getBillDebt(userId);
             if (debt != 0) {
                 userInfo.setDebt(userInfo.getDebt() + debt);
                 try {
@@ -175,11 +239,24 @@ public class UserController {
                     return result;
                 }
             }
-            // 3、将停车费计入消费流水表
 
             // 4、付款。结账成功后将用户表debt设置为0
+            userInfo.setDebt(0.00);
+            try {
+                userInfoService.updateUserInfo(userInfo);
+            } catch (Exception e) {
+                result.setData("系统出错，请重试！");
+                return result;
+            }
 
-            // 5、删除
+            // 5、删除入住信息表信息
+            try {
+                userRoomService.deleteUserRoomInfo(userId);
+            } catch (Exception e) {
+                result.setData("系统出错，请重试！");
+                return result;
+            }
+            result.setData("退房成功，欢迎下次再来");
         }
         return result;
     }

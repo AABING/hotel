@@ -57,4 +57,5 @@ public interface VehicleInfoService {
      * @return
      */
     VehicleInfo getLastVehicleIn(Long uid);
+    VehicleInfo getVehicleInfo(Long userId);
 }

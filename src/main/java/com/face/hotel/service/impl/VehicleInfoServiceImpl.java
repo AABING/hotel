@@ -21,38 +21,7 @@ public class VehicleInfoServiceImpl implements VehicleInfoService {
 
 
     @Resource
-    VehicleInfoMapper vehicleInfoMapper;
-
-    public List<VehicleInfo> getAllVehicleInfo() {
-
-        List<VehicleInfo> vehicleInfos = vehicleInfoMapper.selectAllVehicleInfo();
-        return vehicleInfos;
-    }
-
-    @Override
-    public VehicleInfo getVehicleInfoById(Long id) {
-        return vehicleInfoMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public String updateVehicleInfo(VehicleInfo vehicleInfo) throws Exception {
-        int result = vehicleInfoMapper.updateByPrimaryKey(vehicleInfo);
-        if (1 != result) {
-            throw new Exception("修改停车信息失败！");
-        }
-        return "修改停车信息成功";
-    }
-
-    @Override
-    public String insertVehicleInfo(VehicleInfo vehicleInfo) throws Exception {
-
-        int result = vehicleInfoMapper.insert(vehicleInfo);
-
-        if (1 != result) {
-            throw new Exception("插入停车信息失败！");
-        }
-        return "插入停车信息成功";
-    }
+    private VehicleInfoMapper vehicleInfoMapper;
 
     @Override
     public String deleteVehicleInfo(Long id) throws Exception {

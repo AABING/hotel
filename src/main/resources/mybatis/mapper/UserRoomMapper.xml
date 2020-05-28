@@ -29,4 +29,11 @@
           AND room_id = #{roomId}
     </delete>
 
+    <delete id="deleteUserRoomByUserId">
+        DELETE
+        FROM
+          user_room
+        WHERE user_id = #{userId}
+    </delete>
+
 </mapper>

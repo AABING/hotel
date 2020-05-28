@@ -21,4 +21,15 @@ public interface VehicleInfoMapper extends Mapper<VehicleInfo> {
      * @return
      */
     VehicleInfo selectLastVehicleIn(Long uid);
+
+    /**
+     * description: 查询停车时间
+     *
+     * @param userId 用户id
+     * @return java.util.Date
+     * @author LiBingxiang
+     * @date 2020/02/05 15:41:02
+     */
+    String getHours(Long userId);
+
 }

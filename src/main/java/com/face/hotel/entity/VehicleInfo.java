@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Id;
-import java.util.Date;
 
 /**
  * @Institution csust
@@ -21,15 +20,15 @@ public class VehicleInfo {
     /**
      * 停车位ID
      */
-    @Id
     @ApiModelProperty("停车位ID")
+    @Id
     private Long id;
 
     /**
      * 用户ID
      */
     @ApiModelProperty("用户ID")
-    private Long userId;
+    private Long useId;
 
     /**
      * 车牌号
@@ -41,23 +40,23 @@ public class VehicleInfo {
      * 收费率：按小时计算，费用计算方式为(用户退房时间-进入车位时间)×收费率
      */
     @ApiModelProperty("收费率：按小时计算，费用计算方式为(用户退房时间-进入车位时间)×收费率")
-    private Integer chargeRates;
+    private String chargeRates;
 
     /**
      * 进入车位时间
      */
     @ApiModelProperty("进入车位时间")
-    private Date TimeIn;
+    private String in;
 
     /**
      * 离开车位时间
      */
     @ApiModelProperty("离开车位时间")
-    private Date TimeOut;
+    private String out;
 
     /**
-     * 停车位当前状态
+     * 停车位当前状态(0无车，1有车，-1不可使用)
      */
     @ApiModelProperty("停车位当前状态")
-    private String status;
+    private Integer status;
 }

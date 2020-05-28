@@ -15,4 +15,6 @@ public interface UserRoomMapper extends Mapper<UserRoom> {
     UserRoom getUserRoomById(@Param("userId") String userId, @Param("roomId") String roomId);
 
     Integer deleteUserRoomById(@Param("userId") String userId, @Param("roomId") String roomId);
+
+    Integer deleteUserRoomByUserId(Long userId);
 }

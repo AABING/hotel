@@ -3,7 +3,6 @@ package com.face.hotel.entity;
 import lombok.Data;
 
 import javax.persistence.Id;
-import java.util.Date;
 
 /**
  * @author: naipan
@@ -26,7 +25,7 @@ public class BillInfo {
 
     private String fullName;
 
-    private Date time;
+    private String time;
 
     private String transactionId;
 

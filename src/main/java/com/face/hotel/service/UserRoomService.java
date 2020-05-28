@@ -53,7 +53,7 @@ public interface UserRoomService {
     String updateUserRoomInfo(UserRoom userRoom) throws Exception;
 
     /**
-     * description: 删除入住信息
+     * description: 根据用户id和房间id删除入住信息
      *
      * @param userId 用户id
      * @param roomId 房间id
@@ -62,4 +62,14 @@ public interface UserRoomService {
      * @date 2020/01/31 16:23:33
      */
     String deleteUserRoomInfo(String userId, String roomId) throws Exception;
+
+    /**
+     * description: 根据用户id删除入住信息
+     *
+     * @param userId
+     * @return java.lang.String
+     * @author LiBingxiang
+     * @date 2020/02/05 16:32:56
+     */
+    String deleteUserRoomInfo(Long userId) throws Exception;
 }

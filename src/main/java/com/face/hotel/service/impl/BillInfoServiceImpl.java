@@ -31,7 +31,7 @@ public class BillInfoServiceImpl implements BillInfoService {
     }
 
     @Override
-    public Integer getBillDebt(Long userId) {
+    public Double getBillDebt(Long userId) {
         return billInfoMapper.getBillDebt(userId);
     }
 

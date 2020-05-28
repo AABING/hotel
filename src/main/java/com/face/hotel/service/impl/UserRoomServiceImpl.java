@@ -57,4 +57,13 @@ public class UserRoomServiceImpl implements UserRoomService {
         }
         return "删除成功";
     }
+
+    @Override
+    public String deleteUserRoomInfo(Long userId) throws Exception {
+        int result = userRoomMapper.deleteUserRoomByUserId(userId);
+        if (result != 1) {
+            throw new Exception("删除失败");
+        }
+        return "删除成功";
+    }
 }

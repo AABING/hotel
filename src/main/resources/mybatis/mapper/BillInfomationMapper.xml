@@ -24,7 +24,7 @@
         WHERE user_id = #{userId}
     </select>
 
-    <select id="getBillDebt" resultType="java.lang.Integer">
+    <select id="getBillDebt" resultType="java.lang.Double">
         SELECT
           SUM(cost)
         FROM
